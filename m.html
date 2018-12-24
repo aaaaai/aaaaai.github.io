@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>chipmunk</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<style type="text/css">
+			
+			.jianbian{ 
+				
+				//width:100%; 
+				
+				//height:635px; 
+
+				//background:	#D2E9FF;
+				
+				FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#84C1FF,endColorStr=#FFFFFF); /*IE 6 7 8*/ 
+				
+				background: -ms-linear-gradient(top, #84C1FF,  #FFFFFF);/* IE 10 */
+				
+				background:-moz-linear-gradient(top,#84C1FF,#FFFFFF);/*火狐*/ 
+				
+				background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#84C1FF), to(#FFFFFF));/*谷歌*/ 
+				
+				background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#84C1FF), to(#FFFFFF)); /* Safari 4-5, Chrome 1-9*/
+				
+				background: -webkit-linear-gradient(top, #84C1FF, #FFFFFF);   /*Safari5.1 Chrome 10+*/
+				
+				background: -o-linear-gradient(top, #84C1FF, #FFFFFF);  /*Opera 11.10+*/
+				
+			} 
+			body{
+				font-family: "微软雅黑";
+				/*margin: 60px 100px;
+				background: Azure;*/
+				margin: 0 0;
+				background-color:#F0FFF0;
+
+			}
+			div.u{
+				float: left;
+				width: 65px;
+				height: 30px; 
+				border: 1px solid royalblue; 
+				margin-left: 10px;
+				margin-top: 10px;
+				cursor: pointer;
+				
+				-moz-border-radius: 5px; 
+    				-webkit-border-radius: 5px; 
+    				border-radius:5px;  
+			}
+			div.u:hover{
+				background: #B7FF4A;
+			}
+				
+			div.w{
+				text-align: center;
+				margin: 0 auto;
+				//border: 1px solid red;
+				margin-top: 2px;
+				line-height: 24px;
+			}
+			input.k{
+				height: 32px;
+				width: 300px;
+				font-family: "微软雅黑";
+				font-size: 16px;
+				-moz-border-radius: 3px; 
+    				-webkit-border-radius: 3px; 
+    				border-radius:3px;    			
+    				border: 1px solid #ccc; 
+				padding: 4px 0px;
+				padding-left:5px;
+			}
+			input.b{
+				height: 36px;
+				width: 100px;
+				font-family: "微软雅黑";
+				font-size: 16px;
+				background: white;
+				-moz-border-radius: 5px; 
+				-webkit-border-radius: 5px; 
+				border-radius:5px;    							
+				text-align: center;
+				font-weight: bold;
+				position: relative;
+				overflow: hidden;
+				text-shadow:1px 1px 1px #fff;
+				border:1px solid #dce1e6;
+				box-shadow: 0 1px 2px #fff inset,0 -1px 0 #a8abae inset;
+				background: -webkit-linear-gradient(top,#f2f3f7,#e4e8ec);
+				background: -moz-linear-gradient(top,#f2f3f7,#e4e8ec);
+				background: linear-gradient(top,#f2f3f7,#e4e8ec);
+    			
+    			
+			}
+			
+		</style>
+		<script type="text/javascript">
+		
+			$=function(ID){return document.getElementById(ID);};
+			//$N=function(name){return document.getElementsByName(name);};
+			//$C=function(classname){return document.getElementsByClassName(classname);};
+			//$T=function(tagname){return document.getElementsByTagName(tagname);};
+			function search(){
+				var k = $("searchtext").value;
+				//alert(k);
+				var v = encodeURI(k);
+				window.open("https://www.baidu.com/s?wd="+v);
+			}
+			function translateText(){
+				var k = $("translatetext").value;
+//				alert(k);
+				var v = encodeURI(k);
+				window.open("http://dict.youdao.com/w/eng/"+v);
+			}
+			function openWeb(u){
+				window.open(u);
+//				window.location.href=u;
+			}
+			function huiche(e) {
+				var ev= window.event||e;
+				if (ev.keyCode == 13) {
+					search();
+				}
+			}
+			function fanyi(e) {
+				var ev= window.event||e;
+				if (ev.keyCode == 13) {
+					translateText();
+				}
+			}
+			function clearInputText(o){
+				 o.value="";
+			}
+			function focusInputText(e){
+				var ev= window.event||e;
+				
+				var active_id = document.activeElement.id;
+				var bool_f = active_id=="translatetext";
+				var bool_j = active_id=="searchtext";
+				if (bool_f||bool_j) {
+					
+				} else{
+					if (ev.keyCode == 70) {//f--按下f键弹起时，去翻译输入框
+						$("translatetext").focus();
+					}else if (ev.keyCode == 74) {//j--按下j键弹起时，去检索输入框
+						$("searchtext").focus();
+					} else{
+						
+					}	
+				}
+			}
+			function ismobile(){
+				if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+				    return true;
+				} else {
+				    return false;
+				}
+			}
+		</script>
+	</head>
+	<body onkeyup="focusInputText(event)">
+		<div align="center" style="margin-top: 10px;font-size: 30px;font-weight: bold;">CHIPMUNK</div>
+		<div align="center" style="margin-top: 10px;">
+			<input id="searchtext" type="text" class="k" onmouseover="this.focus()" onfocus="this.select()" onkeydown="huiche(event)" ondblclick="clearInputText(this)"/>
+			<input type="button" class="b" value="搜索" onclick="search()" />
+		</div>
+		<div align="center" style="margin-top: 10px;">
+			<input id="translatetext" type="text" class="k" onmouseover="this.focus()" onfocus="this.select()" onkeydown="fanyi(event)" ondblclick="clearInputText(this)"/>
+			<input type="button" class="b" value="翻译" onclick="translateText()" />
+		</div>
+		<div style="margin-top:10px;margin-bottom: 20px;">
+			<table>
+				 <tr><td>
+				 		<div class="u" align="center"  onclick="openWeb('http://www.sina.com.cn')">
+							<div class="w">新浪</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.qq.com')">
+							<div class="w">QQ</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.163.com')">
+							<div class="w">网易</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.sohu.com')">
+							<div class="w">搜狐</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.pptv.com/')">
+							<div class="w">PP视频</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.le.com')">
+							<div class="w">乐视</div>
+						</div>
+					 	<div class="u" align="center"  onclick="openWeb('http://www.youku.com')">
+							<div class="w">优酷</div>
+						</div>
+					 	<div class="u" align="center"  onclick="openWeb('http://www.iqiyi.com/')">
+							<div class="w">爱奇艺</div>
+						</div>
+
+						
+				 </td></tr>
+				 <tr><td>
+				 		<div class="u" align="center" onclick="openWeb('https://www.baidu.com')">
+							<div class="w">百度</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://cn.bing.com/')">
+							<div class="w">必应</div>
+						</div>			
+						<div class="u" align="center"  onclick="openWeb('https://www.google.com/')">
+							<div class="w">谷歌</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://search.yahoo.com/')">
+							<div class="w">雅虎</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://www.so.com/')">
+							<div class="w">360搜索</div>
+						</div>
+												
+				 </td></tr>
+				 <tr><td>
+				 		<div class="u" align="center"  onclick="openWeb('https://www.zhihu.com')">
+							<div class="w">知乎</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://weibo.com')">
+							<div class="w">weibo</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://tieba.baidu.com/')">
+							<div class="w">贴吧</div>
+						</div>		
+				 </td></tr>
+				 <tr><td>
+				 		<div class="u" align="center"  onclick="openWeb('http://mail.sina.com.cn')">
+							<div class="w">新浪邮箱</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://mail.126.com')">
+							<div class="w">126邮箱</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://mail.qq.com')">
+							<div class="w">QQ邮箱</div>
+						</div>
+				 </td></tr>
+				 <tr><td>
+				 		<div class="u" align="center"  onclick="openWeb('https://www.jd.com/')">
+							<div class="w">京东</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://www.tmall.com/')">
+							<div class="w">天猫</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://www.taobao.com/')">
+							<div class="w">淘宝</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://www.suning.com/')">
+							<div class="w">苏宁</div>
+						</div>
+				 </td></tr>
+				 <tr><td>
+				 		<div class="u" align="center"  onclick="openWeb('http://itace.iteye.com')">
+							<div class="w">itace</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.csdn.net')">
+							<div class="w">csdn</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.apache.org')">
+							<div class="w">apache</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('https://github.com')">
+							<div class="w">github</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://spring.io')">
+							<div class="w">spring</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://stackoverflow.com')">
+							<div class="w">stackflow</div>
+						</div>
+						<div class="u" align="center"  onclick="openWeb('http://www.icourses.cn/cuoc/')">
+							<div class="w">爱课程</div>
+						</div>
+
+				 </td></tr>
+				 <tr><td>
+				 	<div class="u" align="center"  onclick="openWeb('http://sports.sina.com.cn')">
+						<div class="w">新浪体育</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://sports.qq.com')">
+						<div class="w">腾讯体育</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.lesports.com')">
+						<div class="w">乐视体育</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://tv.cctv.com/live/cctv1/')">
+						<div class="w">央视频道</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://v.iqilu.com/live/sdtv/')">
+						<div class="w">山东频道</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.cctv5bo.com/')">
+						<div class="w">cctv5bo</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.dongqiudi.com/')">
+						<div class="w">懂球帝</div>
+					</div>
+				 </td></tr>
+				 <tr><td>
+				 	<div class="u" align="center"  onclick="openWeb('https://www.nationalgeographic.com/')">
+						<div class="w">国家地理</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.dili360.com/')">
+						<div class="w">中国地理</div>
+					</div>
+				 </td></tr>
+				 <tr><td>
+				 	<div class="u" align="center"  onclick="openWeb('http://map.baidu.com/')">
+						<div class="w">百度地图</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.google.cn/maps')">
+						<div class="w">谷歌地图</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://ditu.amap.com/')">
+						<div class="w">高德地图</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://map.qq.com/')">
+						<div class="w">腾讯地图</div>
+					</div>
+					
+				 </td></tr>
+				 <tr><td>
+				 	<div class="u" align="center"  onclick="openWeb('http://db.dota.uuu9.com/hero/list')">
+						<div class="w">1英雄</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://db.dota.uuu9.com/goods/list')">
+						<div class="w">1物品</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://db.dota2.uuu9.com/hero/list')">
+						<div class="w">2英雄</div>
+					</div>
+					 <div class="u" align="center"  onclick="openWeb('http://db.dota2.uuu9.com/goods/list')">
+						<div class="w">2物品</div>
+					</div>
+				 </td></tr>
+				 <tr><td>
+					<div class="u" align="center"  onclick="openWeb('http://www.weather.com.cn/')">
+						<div class="w">天气</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('http://www.pm25.com/')">
+						<div class="w">PM2.5</div>
+					</div>
+					<div class="u" align="center"  onclick="openWeb('https://kyfw.12306.cn/otn/leftTicket/init')">
+						<div class="w">12306</div>
+					</div>
+				 </td></tr>				
+			</table>
+			
+		</div>
+		
+	</body>
+</html>
