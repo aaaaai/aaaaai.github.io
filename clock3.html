@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iOS 风格时钟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #4a569d 0%, #5a4a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 毛玻璃背景效果 */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            width: 90%;
+            max-width: 600px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        /* 控制按钮区域 */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 时钟容器 */
+        .clock-container {
+            display: none;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clock-container.active {
+            display: flex;
+        }
+
+        /* 圆形钟表样式 */
+        .analog-clock {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .clock-center {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 时钟刻度 */
+        .clock-number {
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        /* 分钟刻度线 */
+        .minute-mark {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background: #999;
+            top: 5px;
+            left: 50%;
+            transform-origin: 50% 135px;
+        }
+
+        .minute-mark.main {
+            width: 3px;
+            height: 12px;
+            background: #666;
+        }
+
+        /* 时钟指针 */
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 6px;
+            transition: transform 0.1s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 70px;
+            background: #1a365d;
+            margin-left: -3px;
+            z-index: 5;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 90px;
+            background: #4a5568;
+            margin-left: -2px;
+            z-index: 6;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 100px;
+            background: #e74c3c;
+            margin-left: -1px;
+            z-index: 7;
+            transition: none;
+        }
+
+        /* 翻页时钟样式 */
+        .flip-clock {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .flip-card {
+            width: 70px;
+            height: 100px;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipping .flip-card-inner {
+            animation: flip 0.6s ease-in-out;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(-90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .flip-card-back {
+            transform: rotateX(180deg);
+        }
+
+        .flip-label {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .flip-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 冒号样式 */
+        .colon {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 5px;
+            height: 100px;
+        }
+
+        .colon-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            margin: 5px 0;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* 日期显示 */
+        .date-display {
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* 全屏样式 */
+        body.fullscreen {
+            background: #000;
+        }
+
+        body.fullscreen .glass-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        body.fullscreen .analog-clock {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body.fullscreen .clock-number {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        body.fullscreen .hour-hand {
+            background: rgba(173, 216, 230, 0.9);
+        }
+
+        body.fullscreen .minute-hand {
+            background: rgba(200, 200, 200, 0.8);
+        }
+
+        body.fullscreen .second-hand {
+            background: #ff6b6b;
+        }
+
+        body.fullscreen .clock-center {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.fullscreen .flip-card-front,
+        body.fullscreen .flip-card-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.fullscreen .date-display {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        body.fullscreen .btn {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 360px) {
+            .analog-clock {
+                width: 240px;
+                height: 240px;
+            }
+
+            .flip-card {
+                width: 55px;
+                height: 80px;
+            }
+
+            .flip-card-front,
+            .flip-card-back {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <div class="controls">
+            <button class="btn active" id="analogBtn" onclick="switchClock('analog')">圆形</button>
+            <button class="btn" id="flipBtn" onclick="switchClock('flip')">翻页</button>
+            <button class="btn" id="fullscreenBtn" onclick="toggleFullscreen()">全屏</button>
+        </div>
+
+        <!-- 圆形钟表 -->
+        <div class="clock-container active" id="analogClock">
+            <div class="analog-clock">
+                <div class="clock-face" id="clockFace">
+                    <div class="clock-center"></div>
+                    <div class="hand hour-hand" id="hourHand"></div>
+                    <div class="hand minute-hand" id="minuteHand"></div>
+                    <div class="hand second-hand" id="secondHand"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 翻页时钟 -->
+        <div class="clock-container" id="flipClock">
+            <div class="flip-clock">
+                <div class="flip-unit">
+                    <div class="flip-card" id="hour1">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-unit">
+                    <div class="flip-card" id="hour2">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="colon">
+                    <div class="colon-dot"></div>
+                    <div class="colon-dot"></div>
+                </div>
+                <div class="flip-unit">
+                    <div class="flip-card" id="minute1">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-unit">
+                    <div class="flip-card" id="minute2">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="colon">
+                    <div class="colon-dot"></div>
+                    <div class="colon-dot"></div>
+                </div>
+                <div class="flip-unit">
+                    <div class="flip-card" id="second1">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-unit">
+                    <div class="flip-card" id="second2">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="date-display" id="dateDisplay"></div>
+    </div>
+
+    <script>
+        // 初始化圆形钟表刻度
+        function initClockFace() {
+            const clockFace = document.getElementById('clockFace');
+            const radius = 105;
+
+            // 添加分钟刻度线
+            for (let i = 0; i < 60; i++) {
+                const mark = document.createElement('div');
+                mark.className = 'minute-mark';
+
+                // 每5分钟（整点）的刻度线更粗更长
+                if (i % 5 === 0) {
+                    mark.classList.add('main');
+                }
+
+                mark.style.transform = `rotate(${i * 6}deg)`;
+                clockFace.appendChild(mark);
+            }
+
+            // 添加数字刻度
+            for (let i = 1; i <= 12; i++) {
+                const number = document.createElement('div');
+                number.className = 'clock-number';
+                number.textContent = i;
+
+                const angle = (i * 30 - 90) * (Math.PI / 180);
+                const x = 140 + radius * Math.cos(angle) - 15;
+                const y = 140 + radius * Math.sin(angle) - 15;
+
+                number.style.left = x + 'px';
+                number.style.top = y + 'px';
+
+                clockFace.appendChild(number);
+            }
+        }
+
+        // 更新圆形钟表
+        function updateAnalogClock() {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const hourDeg = (hours * 30) + (minutes * 0.5);
+            const minuteDeg = (minutes * 6) + (seconds * 0.1);
+            const secondDeg = seconds * 6;
+
+            document.getElementById('hourHand').style.transform = `rotate(${hourDeg}deg)`;
+            document.getElementById('minuteHand').style.transform = `rotate(${minuteDeg}deg)`;
+            document.getElementById('secondHand').style.transform = `rotate(${secondDeg}deg)`;
+        }
+
+        // 翻页时钟状态
+        let flipState = {
+            hour1: 0,
+            hour2: 0,
+            minute1: 0,
+            minute2: 0,
+            second1: 0,
+            second2: 0
+        };
+
+        // 更新翻页时钟
+        function updateFlipClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            const newValues = {
+                hour1: hours[0],
+                hour2: hours[1],
+                minute1: minutes[0],
+                minute2: minutes[1],
+                second1: seconds[0],
+                second2: seconds[1]
+            };
+
+            for (const key in newValues) {
+                if (flipState[key] !== newValues[key]) {
+                    const card = document.getElementById(key);
+                    const front = card.querySelector('.flip-card-front');
+                    const back = card.querySelector('.flip-card-back');
+                    
+                    front.textContent = newValues[key];
+                    back.textContent = flipState[key];
+                    
+                    card.classList.add('flipping');
+                    setTimeout(() => {
+                        card.classList.remove('flipping');
+                    }, 600);
+                    
+                    flipState[key] = newValues[key];
+                }
+            }
+        }
+
+        // 更新日期显示
+        function updateDate() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long'
+            };
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        // 切换时钟模式
+        function switchClock(type) {
+            const analogClock = document.getElementById('analogClock');
+            const flipClock = document.getElementById('flipClock');
+            const analogBtn = document.getElementById('analogBtn');
+            const flipBtn = document.getElementById('flipBtn');
+
+            if (type === 'analog') {
+                analogClock.classList.add('active');
+                flipClock.classList.remove('active');
+                analogBtn.classList.add('active');
+                flipBtn.classList.remove('active');
+            } else {
+                flipClock.classList.add('active');
+                analogClock.classList.remove('active');
+                flipBtn.classList.add('active');
+                analogBtn.classList.remove('active');
+            }
+        }
+
+        // 全屏切换
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('全屏请求失败:', err);
+                });
+                document.body.classList.add('fullscreen');
+                document.getElementById('fullscreenBtn').textContent = '退出';
+            } else {
+                document.exitFullscreen();
+                document.body.classList.remove('fullscreen');
+                document.getElementById('fullscreenBtn').textContent = '全屏';
+            }
+        }
+
+        // 监听全屏变化
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen');
+                document.getElementById('fullscreenBtn').textContent = '全屏';
+            }
+        });
+
+        // 初始化
+        initClockFace();
+        updateDate();
+
+        // 每秒更新
+        setInterval(() => {
+            updateAnalogClock();
+            updateFlipClock();
+        }, 1000);
+
+        // 立即更新一次
+        updateAnalogClock();
+        updateFlipClock();
+    </script>
+</body>
+</html>
