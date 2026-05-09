@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>俄罗斯方块 - Liquid Glass</title>
 <style>
-  /* ===== CSS Reset & Base ===== */
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
@@ -44,7 +43,6 @@
     position: relative;
   }
 
-  /* ===== Animated Background Orbs ===== */
   .bg-orbs {
     position: fixed; inset: 0;
     overflow: hidden; z-index: 0;
@@ -57,41 +55,17 @@
     opacity: 0.5;
     animation: orbFloat 12s ease-in-out infinite alternate;
   }
-  .orb:nth-child(1) {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, #6c5ce7, #a29bfe);
-    top: -80px; left: -60px;
-    animation-duration: 14s;
-  }
-  .orb:nth-child(2) {
-    width: 250px; height: 250px;
-    background: radial-gradient(circle, #00cec9, #81ecec);
-    bottom: -60px; right: -40px;
-    animation-duration: 11s;
-    animation-delay: -3s;
-  }
-  .orb:nth-child(3) {
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, #fd79a8, #e84393);
-    top: 40%; left: 60%;
-    animation-duration: 16s;
-    animation-delay: -6s;
-  }
-  .orb:nth-child(4) {
-    width: 180px; height: 180px;
-    background: radial-gradient(circle, #fdcb6e, #f39c12);
-    top: 60%; left: 10%;
-    animation-duration: 13s;
-    animation-delay: -2s;
-  }
+  .orb:nth-child(1) { width: 300px; height: 300px; background: radial-gradient(circle, #6c5ce7, #a29bfe); top: -80px; left: -60px; animation-duration: 14s; }
+  .orb:nth-child(2) { width: 250px; height: 250px; background: radial-gradient(circle, #00cec9, #81ecec); bottom: -60px; right: -40px; animation-duration: 11s; animation-delay: -3s; }
+  .orb:nth-child(3) { width: 200px; height: 200px; background: radial-gradient(circle, #fd79a8, #e84393); top: 40%; left: 60%; animation-duration: 16s; animation-delay: -6s; }
+  .orb:nth-child(4) { width: 180px; height: 180px; background: radial-gradient(circle, #fdcb6e, #f39c12); top: 60%; left: 10%; animation-duration: 13s; animation-delay: -2s; }
   @keyframes orbFloat {
-    0%   { transform: translate(0, 0) scale(1); }
-    33%  { transform: translate(30px, -20px) scale(1.05); }
-    66%  { transform: translate(-20px, 30px) scale(0.95); }
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
     100% { transform: translate(15px, 15px) scale(1.02); }
   }
 
-  /* ===== Glass Panel Base ===== */
   .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur)) saturate(180%);
@@ -107,7 +81,6 @@
     box-shadow: var(--glass-shadow-strong), var(--glass-inset);
   }
 
-  /* ===== Main Layout ===== */
   #game-wrapper {
     position: relative; z-index: 1;
     display: flex;
@@ -115,75 +88,68 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     padding: 12px 12px;
     height: 100vh;
     height: 100dvh;
     justify-content: space-between;
   }
 
-  /* ===== Top Bar ===== */
-  .top-bar {
-    width: 100%;
+  /* ===== Right Side Panel (Stats + Next) ===== */
+  .side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .side-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+  .side-stat-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 14px;
-    border-radius: var(--radius-md);
-    flex-shrink: 0;
+    gap: 4px;
   }
-  .game-title {
-    font-size: 18px;
-    font-weight: 700;
+  .side-stat-label {
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .side-stat-value {
+    font-size: 13px;
+    font-weight: 800;
     color: rgba(255,255,255,0.95);
-    letter-spacing: 1px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
-  .top-actions {
-    display: flex; gap: 8px;
+  .side-actions {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
   }
   .icon-btn {
-    width: 38px; height: 38px;
-    border-radius: var(--radius-xs);
+    width: 32px; height: 32px;
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
     border: none; outline: none;
     color: rgba(255,255,255,0.85);
-    font-size: 18px;
+    font-size: 14px;
   }
   .icon-btn:active {
     transform: scale(0.92);
     background: rgba(255,255,255,0.15);
-  }
-
-  /* ===== Score Panel ===== */
-  .score-panel {
-    width: 100%;
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  .score-card {
-    flex: 1;
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
-    text-align: center;
-  }
-  .score-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 2px;
-  }
-  .score-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.95);
-    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    font-variant-numeric: tabular-nums;
   }
 
   /* ===== Game Board Area ===== */
@@ -192,18 +158,12 @@
     gap: 10px;
     align-items: flex-start;
     flex-shrink: 0;
+    width: 100%;
+    justify-content: center;
   }
 
-  /* Side panels */
-  .side-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 72px;
-    flex-shrink: 0;
-  }
   .side-card {
-    padding: 8px;
+    padding: 6px;
     border-radius: var(--radius-sm);
     text-align: center;
   }
@@ -213,19 +173,19 @@
     color: rgba(255,255,255,0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .preview-canvas {
     display: block;
     margin: 0 auto;
   }
 
-  /* ===== Game Board ===== */
   .board-container {
     border-radius: var(--radius-lg);
     padding: 6px;
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
   }
   .board-container::before {
     content: '';
@@ -244,19 +204,14 @@
     z-index: 1;
   }
 
-  /* ===== Controls ===== */
+  /* ===== Controls - 3x3 Grid Equal Width, Fixed Height ===== */
   .controls-area {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     flex-shrink: 0;
     padding-bottom: env(safe-area-inset-bottom, 8px);
-  }
-  .controls-row {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
   }
   .ctrl-btn {
     border: none; outline: none;
@@ -269,22 +224,22 @@
     color: rgba(255,255,255,0.9);
     font-size: 22px;
     -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    height: 56px;
   }
   .ctrl-btn:active {
     transform: scale(0.9);
     background: rgba(255,255,255,0.25) !important;
   }
   .ctrl-btn svg {
-    width: 26px; height: 26px;
+    width: 28px; height: 28px;
     fill: none;
     stroke: currentColor;
     stroke-width: 2.2;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .ctrl-dir { width: 64px; height: 56px; }
-  .ctrl-action { width: 100px; height: 52px; }
-  .ctrl-action span {
+  .ctrl-btn span {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -364,18 +319,14 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
-  .overlay-btn:active {
-    transform: scale(0.95);
-  }
+  .overlay-btn:active { transform: scale(0.95); }
   .overlay-stats {
     display: flex;
     justify-content: center;
     gap: 24px;
     margin: 16px 0;
   }
-  .overlay-stat {
-    text-align: center;
-  }
+  .overlay-stat { text-align: center; }
   .overlay-stat-val {
     font-size: 20px;
     font-weight: 800;
@@ -388,51 +339,35 @@
     letter-spacing: 1px;
   }
 
-  /* ===== Line Clear Flash ===== */
   @keyframes lineFlash {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.3; }
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
     100% { opacity: 1; }
   }
-  .line-flash {
-    animation: lineFlash 0.3s ease 2;
-  }
-
-  /* ===== Piece Lock Glow ===== */
-  @keyframes lockGlow {
-    0%   { box-shadow: 0 0 0 rgba(255,255,255,0); }
-    50%  { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-    100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
-  }
+  .line-flash { animation: lineFlash 0.3s ease 2; }
 
   /* ===== Responsive ===== */
   @media (max-height: 680px) {
-    .score-panel { gap: 6px; }
-    .score-card { padding: 6px 8px; }
-    .score-value { font-size: 18px; }
-    .score-label { font-size: 9px; }
     .controls-area { gap: 6px; }
-    .ctrl-dir { width: 58px; height: 50px; }
-    .ctrl-action { width: 90px; height: 48px; }
-    .side-panel { width: 64px; }
-    .top-bar { padding: 6px 12px; }
+    .ctrl-btn { height: 50px; }
+    .side-panel { width: 72px; }
+    .side-stat-value { font-size: 12px; }
   }
   @media (max-height: 600px) {
     #game-wrapper { gap: 6px; padding: 8px 10px; }
-    .score-value { font-size: 16px; }
-    .ctrl-dir { width: 54px; height: 46px; }
-    .ctrl-action { width: 84px; height: 44px; }
-    .side-panel { width: 56px; gap: 6px; }
-    .side-card { padding: 6px; }
+    .ctrl-btn { height: 46px; }
+    .side-panel { width: 66px; gap: 4px; }
+    .side-card { padding: 4px; }
+    .side-stat-value { font-size: 11px; }
+    .controls-area { gap: 5px; }
   }
   @media (min-width: 500px) {
-    #game-wrapper { max-width: 440px; }
+    #game-wrapper { max-width: 520px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Animated Background -->
 <div class="bg-orbs">
   <div class="orb"></div>
   <div class="orb"></div>
@@ -440,55 +375,42 @@
   <div class="orb"></div>
 </div>
 
-<!-- Game Wrapper -->
 <div id="game-wrapper">
-
-  <!-- Top Bar -->
-  <div class="top-bar glass-strong">
-    <div class="game-title">TETRIS</div>
-    <div class="top-actions">
-      <button class="icon-btn glass" id="btnPause" title="暂停">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-      </button>
-      <button class="icon-btn glass" id="btnSound" title="音效">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Score Panel -->
-  <div class="score-panel">
-    <div class="score-card glass">
-      <div class="score-label">分数</div>
-      <div class="score-value" id="score">0</div>
-    </div>
-    <div class="score-card glass">
-      <div class="score-label">等级</div>
-      <div class="score-value" id="level">1</div>
-    </div>
-    <div class="score-card glass">
-      <div class="score-label">行数</div>
-      <div class="score-value" id="lines">0</div>
-    </div>
-  </div>
 
   <!-- Board Area -->
   <div class="board-area">
-    <!-- Hold Panel -->
-    <div class="side-panel">
-      <div class="side-card glass">
-        <div class="side-card-label">暂存</div>
-        <canvas class="preview-canvas" id="holdCanvas" width="56" height="56"></canvas>
-      </div>
-    </div>
-
     <!-- Game Board -->
     <div class="board-container glass-strong">
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Next Panel -->
+    <!-- Right Panel: Stats + Actions + Next -->
     <div class="side-panel">
+      <!-- Stats -->
+      <div class="side-stats glass">
+        <div class="side-stat-row">
+          <span class="side-stat-label">分数</span>
+          <span class="side-stat-value" id="score">0</span>
+        </div>
+        <div class="side-stat-row">
+          <span class="side-stat-label">等级</span>
+          <span class="side-stat-value" id="level">1</span>
+        </div>
+        <div class="side-stat-row">
+          <span class="side-stat-label">行数</span>
+          <span class="side-stat-value" id="lines">0</span>
+        </div>
+      </div>
+      <!-- Sound + Pause -->
+      <div class="side-actions">
+        <button class="icon-btn glass" id="btnPause" title="暂停">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+        </button>
+        <button class="icon-btn glass" id="btnSound" title="音效">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+      </div>
+      <!-- Next -->
       <div class="side-card glass">
         <div class="side-card-label">下一个</div>
         <canvas class="preview-canvas" id="nextCanvas" width="56" height="56"></canvas>
@@ -500,41 +422,35 @@
     </div>
   </div>
 
-  <!-- Controls -->
+  <!-- Controls - 3x3 Grid -->
   <div class="controls-area">
-    <div class="controls-row">
-      <button class="ctrl-btn ctrl-dir glass" id="btnRotate">
-        <svg viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-      </button>
-      <button class="ctrl-btn ctrl-dir glass" id="btnUp">
-        <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
-      </button>
-      <button class="ctrl-btn ctrl-dir glass" id="btnHold">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-      </button>
-    </div>
-    <div class="controls-row">
-      <button class="ctrl-btn ctrl-dir glass" id="btnLeft">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button class="ctrl-btn ctrl-action glass" id="btnDrop">
-        <span>DROP</span>
-      </button>
-      <button class="ctrl-btn ctrl-dir glass" id="btnRight">
-        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-    </div>
-    <div class="controls-row">
-      <button class="ctrl-btn ctrl-dir glass" id="btnDown">
-        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <button class="ctrl-btn ctrl-action glass" id="btnHardDrop" style="background: linear-gradient(135deg, rgba(225,112,85,0.35), rgba(253,121,168,0.35));">
-        <span>⚡ 瞬降</span>
-      </button>
-      <button class="ctrl-btn ctrl-dir glass" id="btnStart">
-        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </button>
-    </div>
+    <button class="ctrl-btn glass" id="btnRotate">
+      <svg viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnUp">
+      <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnStart">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnLeft">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnDrop">
+      <span>DROP</span>
+    </button>
+    <button class="ctrl-btn glass" id="btnRight">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnDown">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <button class="ctrl-btn glass" id="btnHardDrop" style="background: linear-gradient(135deg, rgba(225,112,85,0.35), rgba(253,121,168,0.35));">
+      <span>⚡ 瞬降</span>
+    </button>
+    <button class="ctrl-btn glass" id="btnPauseCtrl">
+      <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/></svg>
+    </button>
   </div>
 </div>
 
@@ -577,17 +493,14 @@
 </div>
 
 <script>
-// ===== GAME ENGINE =====
 (() => {
   'use strict';
 
-  // --- Constants ---
   const COLS = 10;
   const ROWS = 20;
   const HIDDEN_ROWS = 2;
   const TOTAL_ROWS = ROWS + HIDDEN_ROWS;
 
-  // Piece colors - vibrant with glass feel
   const COLORS = {
     I: { fill: '#00cec9', glow: 'rgba(0,206,201,0.5)', light: '#81ecec' },
     O: { fill: '#fdcb6e', glow: 'rgba(253,203,110,0.5)', light: '#ffeaa7' },
@@ -598,61 +511,22 @@
     L: { fill: '#fd79a8', glow: 'rgba(253,121,168,0.5)', light: '#fdafca' }
   };
 
-  // Tetromino shapes (each rotation state)
   const SHAPES = {
-    I: [
-      [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
-      [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],
-      [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],
-      [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]
-    ],
-    O: [
-      [[1,1],[1,1]],
-      [[1,1],[1,1]],
-      [[1,1],[1,1]],
-      [[1,1],[1,1]]
-    ],
-    T: [
-      [[0,1,0],[1,1,1],[0,0,0]],
-      [[0,1,0],[0,1,1],[0,1,0]],
-      [[0,0,0],[1,1,1],[0,1,0]],
-      [[0,1,0],[1,1,0],[0,1,0]]
-    ],
-    S: [
-      [[0,1,1],[1,1,0],[0,0,0]],
-      [[0,1,0],[0,1,1],[0,0,1]],
-      [[0,0,0],[0,1,1],[1,1,0]],
-      [[1,0,0],[1,1,0],[0,1,0]]
-    ],
-    Z: [
-      [[1,1,0],[0,1,1],[0,0,0]],
-      [[0,0,1],[0,1,1],[0,1,0]],
-      [[0,0,0],[1,1,0],[0,1,1]],
-      [[0,1,0],[1,1,0],[1,0,0]]
-    ],
-    J: [
-      [[1,0,0],[1,1,1],[0,0,0]],
-      [[0,1,1],[0,1,0],[0,1,0]],
-      [[0,0,0],[1,1,1],[0,0,1]],
-      [[0,1,0],[0,1,0],[1,1,0]]
-    ],
-    L: [
-      [[0,0,1],[1,1,1],[0,0,0]],
-      [[0,1,0],[0,1,0],[0,1,1]],
-      [[0,0,0],[1,1,1],[1,0,0]],
-      [[1,1,0],[0,1,0],[0,1,0]]
-    ]
+    I: [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],[[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]],
+    O: [[[1,1],[1,1]],[[1,1],[1,1]],[[1,1],[1,1]],[[1,1],[1,1]]],
+    T: [[[0,1,0],[1,1,1],[0,0,0]],[[0,1,0],[0,1,1],[0,1,0]],[[0,0,0],[1,1,1],[0,1,0]],[[0,1,0],[1,1,0],[0,1,0]]],
+    S: [[[0,1,1],[1,1,0],[0,0,0]],[[0,1,0],[0,1,1],[0,0,1]],[[0,0,0],[0,1,1],[1,1,0]],[[1,0,0],[1,1,0],[0,1,0]]],
+    Z: [[[1,1,0],[0,1,1],[0,0,0]],[[0,0,1],[0,1,1],[0,1,0]],[[0,0,0],[1,1,0],[0,1,1]],[[0,1,0],[1,1,0],[1,0,0]]],
+    J: [[[1,0,0],[1,1,1],[0,0,0]],[[0,1,1],[0,1,0],[0,1,0]],[[0,0,0],[1,1,1],[0,0,1]],[[0,1,0],[0,1,0],[1,1,0]]],
+    L: [[[0,0,1],[1,1,1],[0,0,0]],[[0,1,0],[0,1,0],[0,1,1]],[[0,0,0],[1,1,1],[1,0,0]],[[1,1,0],[0,1,0],[0,1,0]]]
   };
 
   const PIECE_NAMES = ['I','O','T','S','Z','J','L'];
   const SCORE_TABLE = [0, 100, 300, 500, 800];
   const LEVEL_SPEEDS = [800,720,630,550,470,380,300,220,140,100,80,60,50,40,30];
 
-  // --- DOM Elements ---
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
-  const holdCanvas = document.getElementById('holdCanvas');
-  const holdCtx = holdCanvas.getContext('2d');
   const nextCanvas = document.getElementById('nextCanvas');
   const nextCtx = nextCanvas.getContext('2d');
   const nextCanvas2 = document.getElementById('nextCanvas2');
@@ -669,11 +543,8 @@
   const pauseOverlay = document.getElementById('pauseOverlay');
   const gameOverOverlay = document.getElementById('gameOverOverlay');
 
-  // --- Game State ---
   let board = [];
   let currentPiece = null;
-  let holdPiece = null;
-  let canHold = true;
   let nextPieces = [];
   let bag = [];
   let score = 0;
@@ -684,18 +555,13 @@
   let gameOver = false;
   let dropTimer = null;
   let cellSize = 0;
-  let animatingLines = [];
   let soundEnabled = true;
-  let lockDelay = 0;
   let lockTimer = null;
   const LOCK_DELAY_MS = 500;
 
-  // --- Audio Context (simple sounds) ---
   let audioCtx = null;
   function initAudio() {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
   function playSound(freq, duration, type = 'square') {
     if (!soundEnabled || !audioCtx) return;
@@ -718,26 +584,20 @@
   function playClear() { playSound(660, 0.2, 'sine'); setTimeout(() => playSound(880, 0.2, 'sine'), 100); }
   function playGameOver() { playSound(200, 0.3, 'sawtooth'); setTimeout(() => playSound(150, 0.4, 'sawtooth'), 200); }
 
-  // --- Sizing ---
   function calculateSize() {
     const wrapper = document.getElementById('game-wrapper');
-    const wrapperWidth = wrapper.clientWidth - 24; // padding
-    // Reserve space: top bar ~54, score panel ~60, controls ~180, gaps ~40
-    const availHeight = window.innerHeight - 54 - 60 - 180 - 50;
-    const sidePanelWidth = 72 + 10; // side panel + gap
-
-    const availBoardWidth = wrapperWidth - sidePanelWidth * 2 - 12;
+    const wrapperWidth = wrapper.clientWidth - 24;
+    const availHeight = window.innerHeight - 180 - 40;
+    const sidePanelWidth = 68 + 10;
+    const availBoardWidth = wrapperWidth - sidePanelWidth - 12;
     const availBoardHeight = availHeight;
-
     const cellFromW = Math.floor(availBoardWidth / COLS);
     const cellFromH = Math.floor(availBoardHeight / ROWS);
     cellSize = Math.min(cellFromW, cellFromH);
-    cellSize = Math.max(cellSize, 14); // minimum
-
+    cellSize = Math.max(cellSize, 14);
     const dpr = window.devicePixelRatio || 1;
     const w = cellSize * COLS;
     const h = cellSize * ROWS;
-
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     canvas.width = w * dpr;
@@ -745,46 +605,30 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  // --- Board ---
   function createBoard() {
     board = [];
-    for (let r = 0; r < TOTAL_ROWS; r++) {
-      board.push(new Array(COLS).fill(null));
-    }
+    for (let r = 0; r < TOTAL_ROWS; r++) board.push(new Array(COLS).fill(null));
   }
 
-  // --- Bag Randomizer ---
   function fillBag() {
     bag = [...PIECE_NAMES];
-    // Fisher-Yates shuffle
     for (let i = bag.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [bag[i], bag[j]] = [bag[j], bag[i]];
     }
   }
-
   function getNextPiece() {
     if (bag.length === 0) fillBag();
     return bag.pop();
   }
-
   function ensureNextPieces() {
-    while (nextPieces.length < 3) {
-      nextPieces.push(getNextPiece());
-    }
+    while (nextPieces.length < 3) nextPieces.push(getNextPiece());
   }
 
-  // --- Piece ---
   function createPiece(type) {
     const shape = SHAPES[type][0];
     const cols = shape[0].length;
-    return {
-      type,
-      rotation: 0,
-      shape,
-      x: Math.floor((COLS - cols) / 2),
-      y: 0 // starts at hidden row
-    };
+    return { type, rotation: 0, shape, x: Math.floor((COLS - cols) / 2), y: 0 };
   }
 
   function spawnPiece() {
@@ -792,11 +636,7 @@
     const type = nextPieces.shift();
     ensureNextPieces();
     currentPiece = createPiece(type);
-    canHold = true;
-    lockDelay = 0;
-
     if (!isValidPosition(currentPiece.shape, currentPiece.x, currentPiece.y)) {
-      // Game over
       endGame();
       return false;
     }
@@ -821,8 +661,6 @@
     if (!currentPiece || currentPiece.type === 'O') return;
     const newRot = (currentPiece.rotation + dir + 4) % 4;
     const newShape = SHAPES[currentPiece.type][newRot];
-
-    // Try basic rotation
     if (isValidPosition(newShape, currentPiece.x, currentPiece.y)) {
       currentPiece.rotation = newRot;
       currentPiece.shape = newShape;
@@ -830,8 +668,6 @@
       resetLockDelay();
       return;
     }
-
-    // Wall kicks
     const kicks = [[-1,0],[1,0],[0,-1],[-1,-1],[1,-1],[2,0],[-2,0]];
     for (const [dx, dy] of kicks) {
       if (isValidPosition(newShape, currentPiece.x + dx, currentPiece.y + dy)) {
@@ -873,9 +709,7 @@
   function getGhostY() {
     if (!currentPiece) return 0;
     let gy = currentPiece.y;
-    while (isValidPosition(currentPiece.shape, currentPiece.x, gy + 1)) {
-      gy++;
-    }
+    while (isValidPosition(currentPiece.shape, currentPiece.x, gy + 1)) gy++;
     return gy;
   }
 
@@ -883,98 +717,58 @@
     if (!currentPiece) return;
     const shape = currentPiece.shape;
     const type = currentPiece.type;
-
     for (let r = 0; r < shape.length; r++) {
       for (let c = 0; c < shape[r].length; c++) {
         if (shape[r][c]) {
           const bx = currentPiece.x + c;
           const by = currentPiece.y + r;
-          if (by >= 0 && by < TOTAL_ROWS && bx >= 0 && bx < COLS) {
-            board[by][bx] = type;
-          }
+          if (by >= 0 && by < TOTAL_ROWS && bx >= 0 && bx < COLS) board[by][bx] = type;
         }
       }
     }
-
     clearLockTimer();
     checkLines();
     spawnPiece();
   }
 
   function resetLockDelay() {
-    // Check if piece is on ground
     if (currentPiece && !isValidPosition(currentPiece.shape, currentPiece.x, currentPiece.y + 1)) {
-      lockDelay = 0;
       clearLockTimer();
       lockTimer = setTimeout(() => {
-        if (gameRunning && !gamePaused && currentPiece) {
-          lockPiece();
-        }
+        if (gameRunning && !gamePaused && currentPiece) lockPiece();
       }, LOCK_DELAY_MS);
     }
   }
-
   function clearLockTimer() {
-    if (lockTimer) {
-      clearTimeout(lockTimer);
-      lockTimer = null;
-    }
+    if (lockTimer) { clearTimeout(lockTimer); lockTimer = null; }
   }
 
   function checkLines() {
     const linesToClear = [];
     for (let r = TOTAL_ROWS - 1; r >= 0; r--) {
-      if (board[r].every(cell => cell !== null)) {
-        linesToClear.push(r);
-      }
+      if (board[r].every(cell => cell !== null)) linesToClear.push(r);
     }
-
     if (linesToClear.length > 0) {
       playClear();
-
-      // Remove lines
       for (const r of linesToClear.sort((a,b) => a - b)) {
         board.splice(r, 1);
         board.unshift(new Array(COLS).fill(null));
       }
-
-      // Score
       const cleared = linesToClear.length;
       score += SCORE_TABLE[cleared] * level;
       totalLines += cleared;
       level = Math.floor(totalLines / 10) + 1;
-
       updateUI();
       restartDropTimer();
     }
   }
 
-  function holdCurrentPiece() {
-    if (!currentPiece || !canHold) return;
-    canHold = false;
-    clearLockTimer();
-
-    const type = currentPiece.type;
-    if (holdPiece) {
-      const prevHold = holdPiece;
-      holdPiece = type;
-      currentPiece = createPiece(prevHold);
-    } else {
-      holdPiece = type;
-      spawnPiece();
-    }
-    playMove();
-    drawHold();
-  }
-
-  // --- Drawing ---
   function drawCell(context, x, y, size, type, alpha = 1, isGhost = false) {
     const color = COLORS[type];
     if (!color) return;
     const px = x * size;
     const py = y * size;
     const pad = 1;
-
     if (isGhost) {
       context.save();
       context.globalAlpha = 0.2;
@@ -988,11 +782,8 @@
       context.restore();
       return;
     }
-
     context.save();
     context.globalAlpha = alpha;
-
-    // Main fill with gradient
     const grad = context.createLinearGradient(px, py, px + size, py + size);
     grad.addColorStop(0, color.light);
     grad.addColorStop(0.5, color.fill);
@@ -1001,8 +792,6 @@
     context.beginPath();
     roundRect(context, px + pad, py + pad, size - pad * 2, size - pad * 2, 3);
     context.fill();
-
-    // Glass highlight (top-left)
     const hlGrad = context.createLinearGradient(px, py, px + size * 0.5, py + size * 0.5);
     hlGrad.addColorStop(0, 'rgba(255,255,255,0.45)');
     hlGrad.addColorStop(1, 'rgba(255,255,255,0)');
@@ -1010,8 +799,6 @@
     context.beginPath();
     roundRect(context, px + pad + 1, py + pad + 1, size * 0.6, size * 0.6, 2);
     context.fill();
-
-    // Inner glow
     context.shadowColor = color.glow;
     context.shadowBlur = 6;
     context.strokeStyle = 'rgba(255,255,255,0.25)';
@@ -1020,7 +807,6 @@
     roundRect(context, px + pad + 0.5, py + pad + 0.5, size - pad * 2 - 1, size - pad * 2 - 1, 3);
     context.stroke();
     context.shadowBlur = 0;
-
     context.restore();
   }
 
@@ -1040,17 +826,11 @@
   function drawBoard() {
     const w = cellSize * COLS;
     const h = cellSize * ROWS;
-
-    // Clear
     ctx.clearRect(0, 0, w, h);
-
-    // Grid background
     ctx.fillStyle = 'rgba(0,0,0,0.15)';
     ctx.beginPath();
     roundRect(ctx, 0, 0, w, h, 18);
     ctx.fill();
-
-    // Grid lines
     ctx.strokeStyle = 'rgba(255,255,255,0.04)';
     ctx.lineWidth = 0.5;
     for (let c = 1; c < COLS; c++) {
@@ -1065,19 +845,12 @@
       ctx.lineTo(w, r * cellSize);
       ctx.stroke();
     }
-
-    // Locked cells
     for (let r = HIDDEN_ROWS; r < TOTAL_ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
-        if (board[r][c]) {
-          drawCell(ctx, c, r - HIDDEN_ROWS, cellSize, board[r][c]);
-        }
+        if (board[r][c]) drawCell(ctx, c, r - HIDDEN_ROWS, cellSize, board[r][c]);
       }
     }
-
     if (!currentPiece) return;
-
-    // Ghost piece
     const ghostY = getGhostY();
     if (ghostY !== currentPiece.y) {
       const shape = currentPiece.shape;
@@ -1085,23 +858,17 @@
         for (let c = 0; c < shape[r].length; c++) {
           if (shape[r][c]) {
             const drawY = ghostY + r - HIDDEN_ROWS;
-            if (drawY >= 0) {
-              drawCell(ctx, currentPiece.x + c, drawY, cellSize, currentPiece.type, 1, true);
-            }
+            if (drawY >= 0) drawCell(ctx, currentPiece.x + c, drawY, cellSize, currentPiece.type, 1, true);
           }
         }
       }
     }
-
-    // Current piece
     const shape = currentPiece.shape;
     for (let r = 0; r < shape.length; r++) {
       for (let c = 0; c < shape[r].length; c++) {
         if (shape[r][c]) {
           const drawY = currentPiece.y + r - HIDDEN_ROWS;
-          if (drawY >= 0) {
-            drawCell(ctx, currentPiece.x + c, drawY, cellSize, currentPiece.type);
-          }
+          if (drawY >= 0) drawCell(ctx, currentPiece.x + c, drawY, cellSize, currentPiece.type);
         }
       }
     }
@@ -1111,25 +878,20 @@
     const dpr = window.devicePixelRatio || 1;
     const size = canvasEl.width;
     context.clearRect(0, 0, size, size);
-
     if (!type) return;
-
     const shape = SHAPES[type][0];
     const rows = shape.length;
     const cols = shape[0].length;
     const previewCellSize = Math.min(Math.floor(size / Math.max(rows, cols)), 14);
-
     const offsetX = Math.floor((size - cols * previewCellSize) / 2);
     const offsetY = Math.floor((size - rows * previewCellSize) / 2);
-
+    const color = COLORS[type];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         if (shape[r][c]) {
           const px = offsetX + c * previewCellSize;
           const py = offsetY + r * previewCellSize;
           const pad = 1;
-          const color = COLORS[type];
-
           const grad = context.createLinearGradient(px, py, px + previewCellSize, py + previewCellSize);
           grad.addColorStop(0, color.light);
           grad.addColorStop(1, color.fill);
@@ -1137,8 +899,6 @@
           context.beginPath();
           roundRect(context, px + pad, py + pad, previewCellSize - pad * 2, previewCellSize - pad * 2, 2);
           context.fill();
-
-          // Highlight
           context.fillStyle = 'rgba(255,255,255,0.35)';
           context.beginPath();
           roundRect(context, px + pad + 1, py + pad + 1, previewCellSize * 0.5, previewCellSize * 0.5, 1);
@@ -1146,10 +906,6 @@
         }
       }
     }
-  }
-
-  function drawHold() {
-    drawPreview(holdCtx, holdPiece, holdCanvas);
   }
 
   function drawNext() {
@@ -1165,12 +921,10 @@
 
   function render() {
     drawBoard();
-    drawHold();
     drawNext();
     updateUI();
   }
 
-  // --- Game Loop ---
   function getDropInterval() {
     const idx = Math.min(level - 1, LEVEL_SPEEDS.length - 1);
     return LEVEL_SPEEDS[idx];
@@ -1180,33 +934,25 @@
     if (dropTimer) clearInterval(dropTimer);
     dropTimer = setInterval(() => {
       if (!gameRunning || gamePaused || gameOver) return;
-      if (!movePiece(0, 1)) {
-        // Piece can't move down, lock after delay
-        resetLockDelay();
-      }
+      if (!movePiece(0, 1)) resetLockDelay();
     }, getDropInterval());
   }
 
-  // --- Game Control ---
   function startGame() {
     initAudio();
     createBoard();
     bag = [];
     nextPieces = [];
-    holdPiece = null;
-    canHold = true;
     score = 0;
     level = 1;
     totalLines = 0;
     gameOver = false;
     gamePaused = false;
     gameRunning = true;
-
     ensureNextPieces();
     spawnPiece();
     render();
     restartDropTimer();
-
     startOverlay.classList.remove('active');
     pauseOverlay.classList.remove('active');
     gameOverOverlay.classList.remove('active');
@@ -1215,11 +961,8 @@
   function pauseGame() {
     if (!gameRunning || gameOver) return;
     gamePaused = !gamePaused;
-    if (gamePaused) {
-      pauseOverlay.classList.add('active');
-    } else {
-      pauseOverlay.classList.remove('active');
-    }
+    if (gamePaused) pauseOverlay.classList.add('active');
+    else pauseOverlay.classList.remove('active');
   }
 
   function endGame() {
@@ -1228,23 +971,13 @@
     clearLockTimer();
     if (dropTimer) clearInterval(dropTimer);
     playGameOver();
-
     finalScoreEl.textContent = score.toLocaleString();
     finalLevelEl.textContent = level;
     finalLinesEl.textContent = totalLines;
-
-    setTimeout(() => {
-      gameOverOverlay.classList.add('active');
-    }, 500);
+    setTimeout(() => gameOverOverlay.classList.add('active'), 500);
   }
 
-  // --- Touch / Swipe Handling on Canvas ---
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchStartTime = 0;
-  let touchMoved = false;
-  let swipeHandled = false;
-
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0, touchMoved = false;
   canvas.addEventListener('touchstart', (e) => {
     e.preventDefault();
     if (!gameRunning || gamePaused) return;
@@ -1253,17 +986,15 @@
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchMoved = false;
-    swipeHandled = false;
   }, { passive: false });
 
   canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
-    if (!gameRunning || gamePaused || swipeHandled) return;
+    if (!gameRunning || gamePaused) return;
     const touch = e.touches[0];
     const dx = touch.clientX - touchStartX;
     const dy = touch.clientY - touchStartY;
     const threshold = cellSize * 0.8;
-
     if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy)) {
       if (dx > 0) movePiece(1, 0);
       else movePiece(-1, 0);
@@ -1281,19 +1012,10 @@
     e.preventDefault();
     if (!gameRunning || gamePaused) return;
     const elapsed = Date.now() - touchStartTime;
-
-    if (!touchMoved && elapsed < 200) {
-      // Tap = rotate
-      rotatePiece(1);
-    } else if (!touchMoved && elapsed >= 200) {
-      // Long press = hard drop
-      hardDrop();
-      render();
-    }
+    if (!touchMoved && elapsed < 200) rotatePiece(1);
+    else if (!touchMoved && elapsed >= 200) { hardDrop(); render(); }
   }, { passive: false });
 
-  // --- Button Controls ---
-  // Prevent double-firing from touch + click
   function addBtnHandler(id, handler) {
     const btn = document.getElementById(id);
     let lastCall = 0;
@@ -1316,48 +1038,35 @@
   addBtnHandler('btnRotate', () => { if (gameRunning && !gamePaused) { rotatePiece(1); render(); } });
   addBtnHandler('btnDrop', () => { if (gameRunning && !gamePaused) { movePiece(0, 1); render(); } });
   addBtnHandler('btnHardDrop', () => { if (gameRunning && !gamePaused) { hardDrop(); render(); } });
-  addBtnHandler('btnHold', () => { if (gameRunning && !gamePaused) { holdCurrentPiece(); render(); } });
   addBtnHandler('btnStart', () => { if (!gameRunning) startGame(); else pauseGame(); });
   addBtnHandler('btnPause', () => pauseGame());
+  addBtnHandler('btnPauseCtrl', () => { if (gameRunning) pauseGame(); });
   addBtnHandler('btnPlay', () => startGame());
   addBtnHandler('btnResume', () => pauseGame());
   addBtnHandler('btnRestart', () => startGame());
 
-  // Sound toggle
   document.getElementById('btnSound').addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     const btn = document.getElementById('btnSound');
     btn.style.opacity = soundEnabled ? '1' : '0.4';
   });
 
-  // --- Keyboard Support ---
   document.addEventListener('keydown', (e) => {
     if (!gameRunning) {
       if (e.key === 'Enter' || e.key === ' ') startGame();
       return;
     }
     if (gamePaused && e.key !== 'p' && e.key !== 'P' && e.key !== 'Escape') return;
-
     switch(e.key) {
-      case 'ArrowLeft': case 'a': case 'A':
-        movePiece(-1, 0); render(); break;
-      case 'ArrowRight': case 'd': case 'D':
-        movePiece(1, 0); render(); break;
-      case 'ArrowDown': case 's': case 'S':
-        if(movePiece(0, 1)) score += 1; render(); break;
-      case 'ArrowUp': case 'w': case 'W':
-        rotatePiece(1); render(); break;
-      case ' ':
-        e.preventDefault();
-        hardDrop(); render(); break;
-      case 'c': case 'C': case 'Shift':
-        holdCurrentPiece(); render(); break;
-      case 'p': case 'P': case 'Escape':
-        pauseGame(); break;
+      case 'ArrowLeft': case 'a': case 'A': movePiece(-1, 0); render(); break;
+      case 'ArrowRight': case 'd': case 'D': movePiece(1, 0); render(); break;
+      case 'ArrowDown': case 's': case 'S': if(movePiece(0, 1)) score += 1; render(); break;
+      case 'ArrowUp': case 'w': case 'W': rotatePiece(1); render(); break;
+      case ' ': e.preventDefault(); hardDrop(); render(); break;
+      case 'p': case 'P': case 'Escape': pauseGame(); break;
     }
   });
 
-  // --- Render Loop ---
   let lastRender = 0;
   function gameLoop(timestamp) {
     if (gameRunning && !gamePaused && timestamp - lastRender > 16) {
@@ -1367,7 +1076,6 @@
     requestAnimationFrame(gameLoop);
   }
 
-  // --- Init ---
   function init() {
     calculateSize();
     createBoard();
@@ -1375,14 +1083,8 @@
     requestAnimationFrame(gameLoop);
   }
 
-  window.addEventListener('resize', () => {
-    calculateSize();
-    render();
-  });
-
-  // Prevent scroll / bounce
+  window.addEventListener('resize', () => { calculateSize(); render(); });
   document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
-
   init();
 })();
 </script>
