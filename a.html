@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>航空母舰-山东舰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(160deg, #f5f7fa 0%, #e8edf5 100%);
+            min-height: 100vh;
+            padding: 32px 20px 48px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 36px;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px 12px;
+            justify-content: flex-start;
+        }
+
+        /* 每行 5 个 */
+        .icon-card {
+            width: calc((100% - 48px) / 5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #1d1d1f;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .icon-card:active {
+            transform: scale(0.94);
+        }
+
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+            transition: box-shadow 0.2s ease, transform 0.15s ease;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .icon-card:hover .icon-box {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+            transform: translateY(-2px);
+        }
+
+        .icon-label {
+            font-size: 11px;
+            line-height: 1.3;
+            text-align: center;
+            margin-top: 8px;
+            color: #3a3a3c;
+            font-weight: 500;
+            word-break: break-all;
+            max-width: 100%;
+        }
+
+        .icon-label small {
+            display: block;
+            font-size: 10px;
+            color: #8e8e93;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* 品牌色 */
+        .bg-cctv     { background: linear-gradient(135deg, #d32f2f, #b71c1c); }
+        .bg-bilibili { background: linear-gradient(135deg, #fb7299, #e34d7a); }
+        .bg-tencent  { background: linear-gradient(135deg, #ff8c00, #e67e00); }
+        .bg-iqiyi    { background: linear-gradient(135deg, #00be06, #009a04); }
+        .bg-youku    { background: linear-gradient(135deg, #1e90ff, #0066cc); }
+        .bg-mango    { background: linear-gradient(135deg, #ff6f00, #e65100); }
+        .bg-cctv14   { background: linear-gradient(135deg, #8e24aa, #6a1b9a); }
+        .bg-xuexi    { background: linear-gradient(135deg, #e53935, #c62828); }
+        .bg-yoozb    { background: linear-gradient(135deg, #0f9d58, #0b7a43); }
+        .bg-cctv-live{ background: linear-gradient(135deg, #c62828, #8e0000); }
+        .bg-gaowen   { background: linear-gradient(135deg, #1565c0, #0d47a1); }
+        .bg-migu     { background: linear-gradient(135deg, #ff5722, #d84315); }
+        .bg-88kanqiu { background: linear-gradient(135deg, #00897b, #00695c); }
+
+        .icon-text {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        /* 航空母舰图片区 */
+        .ship-wrap {
+            margin-top: 36px;
+            text-align: center;
+        }
+
+        .ship-wrap img {
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .ship-caption {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #86868b;
+            text-align: center;
+        }
+
+        /* 小屏适配 */
+        @media (max-width: 420px) {
+            .container {
+                max-width: 100%;
+            }
+            .grid {
+                gap: 14px 8px;
+            }
+            .icon-card {
+                width: calc((100% - 32px) / 5);
+            }
+            .icon-box {
+                width: 52px;
+                height: 52px;
+                border-radius: 13px;
+                font-size: 22px;
+            }
+            .icon-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>航空母舰-山东舰</h1>
+        <p class="subtitle">舰载航行 · 点击图标跳转</p>
+
+        <div class="grid">
+
+            <!-- 央视动画片台 -->
+            <a class="icon-card" href="http://donghua.cctv.com/" target="_blank" rel="noopener noreferrer" title="央视网动画片台">
+                <div class="icon-box bg-cctv">
+                    <span class="icon-text">📺</span>
+                </div>
+                <div class="icon-label">央视动画片台</div>
+            </a>
+
+            <!-- CCTV-14 动画大放映 -->
+            <a class="icon-card" href="https://tv.cctv.com/lm/dhdfy/" target="_blank" rel="noopener noreferrer" title="动画大放映_CCTV节目官网">
+                <div class="icon-box bg-cctv14">
+                    <span class="icon-text">🎬</span>
+                </div>
+                <div class="icon-label">动画大放映<small>CCTV-14</small></div>
+            </a>
+
+            <!-- CCTV 电视直播大全 -->
+            <a class="icon-card" href="https://tv.cctv.com/live/index.shtml" target="_blank" rel="noopener noreferrer" title="直播大全_CCTV节目官网_央视网">
+                <div class="icon-box bg-cctv-live">
+                    <span class="icon-text">📡</span>
+                </div>
+                <div class="icon-label">CCTV直播<small>直播大全</small></div>
+            </a>
+
+            <!-- 哔哩哔哩番剧区 -->
+            <a class="icon-card" href="https://www.bilibili.com/anime/" target="_blank" rel="noopener noreferrer" title="哔哩哔哩番剧区">
+                <div class="icon-box bg-bilibili">
+                    <span class="icon-text">🅱️</span>
+                </div>
+                <div class="icon-label">哔哩哔哩<small>番剧</small></div>
+            </a>
+
+            <!-- 腾讯视频少儿频道 -->
+            <a class="icon-card" href="https://v.qq.com/channel/child" target="_blank" rel="noopener noreferrer" title="腾讯视频-少儿频道-儿童动画片">
+                <div class="icon-box bg-tencent">
+                    <span class="icon-text">🐧</span>
+                </div>
+                <div class="icon-label">腾讯视频<small>少儿</small></div>
+            </a>
+
+            <!-- 爱奇艺少儿频道 -->
+            <a class="icon-card" href="https://www.iqiyi.com/cartoon/" target="_blank" rel="noopener noreferrer" title="爱奇艺-儿童频道-少儿动画片大全">
+                <div class="icon-box bg-iqiyi">
+                    <span class="icon-text">🥝</span>
+                </div>
+                <div class="icon-label">爱奇艺<small>少儿</small></div>
+            </a>
+
+            <!-- 优酷少儿频道 -->
+            <a class="icon-card" href="https://www.youku.com/ku/webchild" target="_blank" rel="noopener noreferrer" title="优酷-少儿频道-儿童动画片大全">
+                <div class="icon-box bg-youku">
+                    <span class="icon-text">▶️</span>
+                </div>
+                <div class="icon-label">优酷<small>少儿</small></div>
+            </a>
+
+            <!-- 芒果TV少儿频道 -->
+            <a class="icon-card" href="https://www.mgtv.com/child" target="_blank" rel="noopener noreferrer" title="芒果TV-少儿频道-萌趣全球少儿精选">
+                <div class="icon-box bg-mango">
+                    <span class="icon-text">🥭</span>
+                </div>
+                <div class="icon-label">芒果TV<small>少儿</small></div>
+            </a>
+
+            <!-- 咪咕视频少儿频道 -->
+            <a class="icon-card" href="https://www.miguvideo.com/p/channel/8c69c248afaa4efd9757d53707c16f51" target="_blank" rel="noopener noreferrer" title="咪咕视频-少儿频道">
+                <div class="icon-box bg-migu">
+                    <span class="icon-text">🎠</span>
+                </div>
+                <div class="icon-label">咪咕视频<small>少儿</small></div>
+            </a>
+
+            <!-- 学习强国 · 电视专题片 -->
+            <a class="icon-card" href="https://www.xuexi.cn/4426aa87b0b64ac671c96379a3a8bd26/db086044562a57b441c24f2af1c8e101.html#109tvcosfnl-5" target="_blank" rel="noopener noreferrer" title="学习强国 · 电视专题片">
+                <div class="icon-box bg-xuexi">
+                    <span class="icon-text">📖</span>
+                </div>
+                <div class="icon-label">学习强国<small>电视专题片</small></div>
+            </a>
+
+            <!-- 看球网 -->
+            <a class="icon-card" href="http://www.yoozb.live/" target="_blank" rel="noopener noreferrer" title="看球网 · 无插件体育直播">
+                <div class="icon-box bg-yoozb">
+                    <span class="icon-text">⚽</span>
+                </div>
+                <div class="icon-label">看球网<small>体育直播</small></div>
+            </a>
+
+            <!-- 看球网（新地址） -->
+            <a class="icon-card" href="https://jzbkjs3n1.gaowenceshi.com/" target="_blank" rel="noopener noreferrer" title="看球网 · 新地址">
+                <div class="icon-box bg-gaowen">
+                    <span class="icon-text">🏀</span>
+                </div>
+                <div class="icon-label">看球网<small>新地址</small></div>
+            </a>
+
+            <!-- 看球网 88kanqiu -->
+            <a class="icon-card" href="https://www.88kanqiu.la" target="_blank" rel="noopener noreferrer" title="88看球 · NBA/足球直播">
+                <div class="icon-box bg-88kanqiu">
+                    <span class="icon-text">🎯</span>
+                </div>
+                <div class="icon-label">88看球<small>NBA/足球</small></div>
+            </a>
+
+        </div>
+
+        <!-- 航空母舰-山东舰图片 -->
+        <div class="ship-wrap">
+            <img src="image/ship.png" alt="航空母舰-山东舰">
+            <p class="ship-caption">航空母舰-山东舰</p>
+        </div>
+    </div>
+</body>
+</html>
