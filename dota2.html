@@ -405,7 +405,7 @@
     <div class="footer-controls">
         <div class="footer-left">
             <button class="reset-btn" id="resetBtn">🔄 重新开始</button>
-            <!-- 新增跳转控件 -->
+            <!-- 跳转控件 -->
             <input type="number" id="jumpInput" class="jump-input" min="1" max="100" value="1" placeholder="题号">
             <button class="jump-btn" id="jumpBtn">跳转</button>
         </div>
@@ -552,7 +552,7 @@
     const totalQSpan = document.getElementById('total-q');
     const scoreValueSpan = document.getElementById('scoreValue');
     const tipContent = document.getElementById('tipContent');
-    // 新增跳转元素
+    // 跳转元素
     const jumpInput = document.getElementById('jumpInput');
     const jumpBtn = document.getElementById('jumpBtn');
 
@@ -561,16 +561,7 @@
     jumpInput.max = questions.length;
     jumpInput.value = 1;
 
-    // ---------- 辅助函数 ----------
-    function shuffleArray(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-    }
-
-    // 加载题目
+    // ---------- 加载题目（完全保持选项数组原始顺序） ----------
     function loadQuestion(index) {
         // 边界保护
         if (index < 0) index = 0;
@@ -587,14 +578,14 @@
 
         questionText.textContent = qData.q;
 
-        const correctText = qData.options[qData.correct];
-        const shuffledOptions = shuffleArray([...qData.options]);
-        correctOptionIndex = shuffledOptions.indexOf(correctText);
+        // 直接使用原数组顺序，不进行随机打乱
+        const options = qData.options;
+        correctOptionIndex = qData.correct;
 
         optionsContainer.innerHTML = '';
         const letters = ['A', 'B', 'C', 'D'];
 
-        shuffledOptions.forEach((optText, idx) => {
+        options.forEach((optText, idx) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.setAttribute('data-index', idx);
@@ -689,27 +680,16 @@
         if (target < 1) target = 1;
         if (target > questions.length) target = questions.length;
         jumpInput.value = target;
-        // 重置答题状态并加载题目
+        // 重置答题状态并加载题目，跳转后答对不计分
         currentIndex = target - 1;
-        jumpIgnoreScore = true; // 跳转后暂时忽略计分
+        jumpIgnoreScore = true;
         loadQuestion(target - 1);
-        // 清除标志的时机：在下一题或重置时清除
     }
 
     // 全局标志：跳转后是否忽略计分
     let jumpIgnoreScore = false;
 
-    // 修改handleOptionClick，加入判断
-    // 但为了不重写整个函数，我们可以在加分前判断
-    // 由于已经定义了handleOptionClick，我们在此重新定义？或者修改上面的函数。
-    // 为了简洁，直接在原函数中修改。但代码已经写在上面，可以覆盖。
-    // 这里我们重新绑定事件？不用，我们修改原函数。
-    // 由于函数声明提升，我们可以直接修改上面函数的定义吗？不方便，我们使用函数表达式重新赋值。
-    // 实际上我们可以不修改原函数，而在跳转时设置标志，并在原函数中读取。
-    // 但原函数中已经写了score++，我们要改成 if (!jumpIgnoreScore) score++; 等等。
-    // 为了不重写整个script，我们替换原来的handleOptionClick。
-
-    // 我们重写handleOptionClick
+    // 重新定义handleOptionClick以支持跳转忽略计分
     const originalHandleOptionClick = handleOptionClick;
     handleOptionClick = function(selectedIdx, btnElement) {
         if (answered) return;
@@ -747,9 +727,6 @@
 
         answered = true;
         nextBtn.disabled = false;
-
-        // 如果忽略计分，之后恢复？在下一题或重置时清除标志
-        // 但是为了防止连续答题，我们在下一题时清除
     };
 
     // 修改nextQuestion，在跳转时清除标志
